@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hey Kiddo! A Little Surprise 🐼🍫</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Fredoka & Quicksand for warm, playful, mobile-friendly readability -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-from: #fdf2f8;
+      --bg-via: #f3e8ff;
+      --bg-to: #fce7f3;
+      --primary: #9333ea;
+      --primary-hover: #7e22ce;
+      --primary-light: #f3e8ff;
+      --accent: #ec4899;
+      --card-border: #e9d5ff;
+      --text-main: #3b0764;
+      --text-muted: #6b21a8;
+      --badge-bg: #fae8ff;
+    }
+
+    /* Dynamic Theme Palettes */
+    body[data-theme="lavender"] {
+      --bg-from: #f3e8ff;
+      --bg-via: #ede9fe;
+      --bg-to: #fae8ff;
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #ede9fe;
+      --accent: #c026d3;
+      --card-border: #c4b5fd;
+      --text-main: #2e1065;
+      --text-muted: #5b21b6;
+      --badge-bg: #f3e8ff;
+    }
+
+    body[data-theme="pink"] {
+      --bg-from: #fff1f2;
+      --bg-via: #fce7f3;
+      --bg-to: #ffe4e6;
+      --primary: #ec4899;
+      --primary-hover: #db2777;
+      --primary-light: #fce7f3;
+      --accent: #f43f5e;
+      --card-border: #fbcfe8;
+      --text-main: #500724;
+      --text-muted: #9d174d;
+      --badge-bg: #ffe4e6;
+    }
+
+    body[data-theme="mint"] {
+      --bg-from: #ecfdf5;
+      --bg-via: #ccfbf1;
+      --bg-to: #e0f2fe;
+      --primary: #0d9488;
+      --primary-hover: #0f766e;
+      --primary-light: #ccfbf1;
+      --accent: #10b981;
+      --card-border: #99f6e4;
+      --text-main: #042f2e;
+      --text-muted: #115e59;
+      --badge-bg: #d1fae5;
+    }
+
+    body[data-theme="peach"] {
+      --bg-from: #fff7ed;
+      --bg-via: #ffedd5;
+      --bg-to: #fef3c7;
+      --primary: #f97316;
+      --primary-hover: #ea580c;
+      --primary-light: #ffedd5;
+      --accent: #fb7185;
+      --card-border: #fed7aa;
+      --text-main: #431407;
+      --text-muted: #9a3412;
+      --badge-bg: #fef3c7;
+    }
+
+    body[data-theme="sky"] {
+      --bg-from: #f0f9ff;
+      --bg-via: #e0f2fe;
+      --bg-to: #dbeafe;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #38bdf8;
+      --card-border: #bae6fd;
+      --text-main: #082f49;
+      --text-muted: #075985;
+      --badge-bg: #e0f2fe;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, var(--bg-from), var(--bg-via), var(--bg-to));
+      color: var(--text-main);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.4s ease;
+    }
+
+    h1, h2, h3, .font-display {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .theme-btn {
+      background-color: var(--primary);
+      color: #ffffff;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.18);
+    }
+    .theme-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px) scale(1.02);
+    }
+    .theme-btn:active {
+      transform: scale(0.96);
+    }
+
+    .theme-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      border: 2px solid var(--card-border);
+      box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.08);
+      transition: border-color 0.4s ease, transform 0.35s ease;
+    }
+
+    .option-btn {
+      background: #ffffff;
+      border: 2px solid var(--card-border);
+      color: var(--text-main);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .option-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .option-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Keyframe Animations */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    @keyframes blinkEyes {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.08); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(16px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.16); }
+    }
+
+    @keyframes rainFall {
+      0% {
+        transform: translateY(-120px) rotate(0deg) translateX(0px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(112vh) rotate(360deg) translateX(25px);
+        opacity: 0.7;
+      }
+    }
+
+    .animate-float {
+      animation: floatSlow 3.2s ease-in-out infinite;
+    }
+
+    .animate-wiggle {
+      animation: wiggle 2.2s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
+
+    .animate-blink {
+      animation: blinkEyes 4s infinite;
+      transform-origin: center;
+    }
+
+    .animate-pop {
+      animation: popIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-pulse-heart {
+      animation: heartPulse 1.4s ease-in-out infinite;
+    }
+
+    /* Rain container */
+    #rain-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      overflow: hidden;
+    }
+
+    .rain-item {
+      position: absolute;
+      top: -110px;
+      will-change: transform;
+      animation-name: rainFall;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    /* Smooth screen switching */
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body data-theme="lavender" class="flex flex-col items-center justify-center min-h-screen px-4 py-6 relative">
+
+  <!-- Bounty Chocolate & Hearts Rain Layer -->
+  <div id="rain-layer" aria-hidden="true"></div>
+
+  <!-- Floating Top Pill Header (Progress + Theme Mini Switcher) -->
+  <header class="w-full max-w-md flex items-center justify-between mb-4 z-20">
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-white/60 shadow-sm">
+      <span class="text-base">🐼</span>
+      <span class="text-xs font-bold tracking-wide uppercase" style="color: var(--text-muted);">For Kiddo</span>
+    </div>
+
+    <!-- Mini color dots always accessible in case she wants to switch colors mid-way -->
+    <div class="flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-2.5 py-1.5 rounded-full shadow-sm border border-white/60" title="Change Theme Color">
+      <button onclick="setTheme('lavender')" aria-label="Lavender Theme" class="w-4 h-4 rounded-full bg-purple-400 ring-2 ring-offset-1 ring-transparent focus:ring-purple-500 transition-transform active:scale-90"></button>
+      <button onclick="setTheme('pink')" aria-label="Pink Theme" class="w-4 h-4 rounded-full bg-pink-400 ring-2 ring-offset-1 ring-transparent focus:ring-pink-500 transition-transform active:scale-90"></button>
+      <button onclick="setTheme('mint')" aria-label="Mint Theme" class="w-4 h-4 rounded-full bg-teal-400 ring-2 ring-offset-1 ring-transparent focus:ring-teal-500 transition-transform active:scale-90"></button>
+      <button onclick="setTheme('peach')" aria-label="Peach Theme" class="w-4 h-4 rounded-full bg-orange-400 ring-2 ring-offset-1 ring-transparent focus:ring-orange-500 transition-transform active:scale-90"></button>
+      <button onclick="setTheme('sky')" aria-label="Sky Blue Theme" class="w-4 h-4 rounded-full bg-sky-400 ring-2 ring-offset-1 ring-transparent focus:ring-sky-500 transition-transform active:scale-90"></button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER (Mobile-first max-w-md) -->
+  <main class="w-full max-w-md z-10 my-auto">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 0: BREAKING NEWS INTRO              -->
+    <!-- ========================================== -->
+    <section id="screen-news" class="screen active flex-col items-center text-center theme-card rounded-3xl overflow-hidden animate-pop">
+      <!-- Red Breaking News Banner -->
+      <div class="w-full bg-rose-600 text-white py-2.5 px-4 flex items-center justify-between shadow-sm">
+        <span class="flex items-center gap-1.5 font-display font-bold text-xs tracking-wider uppercase">
+          <span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
+          <span>Breaking News</span>
+        </span>
+        <span class="text-[11px] font-bold bg-rose-800/70 px-2.5 py-0.5 rounded-full">LIVE REPORT 📺</span>
+      </div>
+
+      <div class="p-6 sm:p-7 flex flex-col items-center">
+        <!-- Cute News Anchor Teddy & Panda -->
+        <div class="text-5xl mb-3 animate-wiggle select-none">
+          📰🐼🎙️
+        </div>
+
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 bg-rose-100 text-rose-700">
+          🚨 URGENT FRIENDSHIP ALERT 🚨
+        </span>
+
+        <h1 class="text-xl sm:text-2xl font-bold mb-3 leading-snug">
+          Certified Drama King Caught Yelling & Talking Total Nonsense at <span style="color: var(--primary);">Kiddo</span>!
+        </h1>
+
+        <div class="w-full bg-white/85 rounded-2xl p-4 text-left border mb-4 space-y-2 text-sm leading-relaxed" style="border-color: var(--card-border);">
+          <p>
+            <strong>Eyewitness Report:</strong> Earlier, one very loud idiot raised his voice over something super silly and started blabbering complete nonsense like his brain went on vacation.
+          </p>
+          <p>
+            <strong>Current Status:</strong> Suspect is sitting in the corner regretting every word, missing Kiddo’s smile, and has sent a cute rescue squad to say sorry properly. 🥺💛
+          </p>
+        </div>
+
+        <!-- Live Ticker Strip -->
+        <div class="w-full rounded-xl py-2 px-3 mb-5 text-xs font-bold flex items-center justify-center gap-2" style="background-color: var(--primary-light); color: var(--primary);">
+          <span>📢 UPDATE:</span>
+          <span>Emergency Bounty chocolates on standby! 🍫</span>
+        </div>
+
+        <button onclick="showScreen('screen-welcome')" class="theme-btn w-full py-3.5 px-6 rounded-2xl font-display font-bold text-lg flex items-center justify-center gap-2">
+          <span>Read Full Apology Mission</span>
+          <span>➡️</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: WELCOME & COLOR PICKER           -->
+    <!-- ========================================== -->
+    <section id="screen-welcome" class="screen flex-col items-center text-center theme-card rounded-3xl p-6 sm:p-8">
+      <!-- Cute Animated Teddy & Panda Duo SVG -->
+      <div class="relative w-44 h-36 mx-auto mb-3 animate-float">
+        <svg viewBox="0 0 220 170" class="w-full h-full drop-shadow-md">
+          <!-- Soft shadow -->
+          <ellipse cx="110" cy="158" rx="75" ry="9" fill="rgba(0,0,0,0.08)" />
+
+          <!-- TEDDY BEAR (Left) -->
+          <g transform="translate(20, 22)">
+            <!-- Ears -->
+            <circle cx="24" cy="22" r="14" fill="#c08457" />
+            <circle cx="24" cy="22" r="8" fill="#eab68c" />
+            <circle cx="68" cy="22" r="14" fill="#c08457" />
+            <circle cx="68" cy="22" r="8" fill="#eab68c" />
+            <!-- Body -->
+            <ellipse cx="46" cy="96" rx="28" ry="32" fill="#c08457" />
+            <ellipse cx="46" cy="98" rx="17" ry="21" fill="#eab68c" />
+            <!-- Head -->
+            <circle cx="46" cy="46" r="28" fill="#d49668" />
+            <!-- Muzzle -->
+            <ellipse cx="46" cy="54" rx="13" ry="10" fill="#fae1cc" />
+            <!-- Eyes -->
+            <circle cx="36" cy="42" r="3.5" fill="#2d1b12" class="animate-blink" />
+            <circle cx="56" cy="42" r="3.5" fill="#2d1b12" class="animate-blink" />
+            <circle cx="37" cy="41" r="1.2" fill="#fff" />
+            <circle cx="57" cy="41" r="1.2" fill="#fff" />
+            <!-- Nose & Smile -->
+            <ellipse cx="46" cy="50" rx="4.5" ry="3" fill="#4a2c1d" />
+            <path d="M41 56 Q46 61 51 56" stroke="#4a2c1d" stroke-width="2.2" fill="none" stroke-linecap="round" />
+            <!-- Blush -->
+            <ellipse cx="29" cy="51" rx="5" ry="3" fill="#ff8fa3" opacity="0.65" />
+            <ellipse cx="63" cy="51" rx="5" ry="3" fill="#ff8fa3" opacity="0.65" />
+            <!-- Little Waving Paw -->
+            <ellipse cx="18" cy="84" rx="9" ry="13" transform="rotate(-25 18 84)" fill="#c08457" />
+            <ellipse cx="74" cy="88" rx="9" ry="13" transform="rotate(20 74 88)" fill="#c08457" />
+          </g>
+
+          <!-- PANDA (Right) -->
+          <g transform="translate(105, 18)">
+            <!-- Ears -->
+            <circle cx="24" cy="22" r="14" fill="#27272a" />
+            <circle cx="72" cy="22" r="14" fill="#27272a" />
+            <!-- Body -->
+            <ellipse cx="48" cy="100" rx="30" ry="33" fill="#ffffff" stroke="#e4e4e7" stroke-width="2" />
+            <path d="M22 86 Q48 102 74 86" stroke="#27272a" stroke-width="10" fill="none" stroke-linecap="round" />
+            <!-- Head -->
+            <circle cx="48" cy="48" r="30" fill="#ffffff" stroke="#e4e4e7" stroke-width="2" />
+            <!-- Eye Patches -->
+            <ellipse cx="36" cy="45" rx="9" ry="11" transform="rotate(-15 36 45)" fill="#27272a" />
+            <ellipse cx="60" cy="45" rx="9" ry="11" transform="rotate(15 60 45)" fill="#27272a" />
+            <!-- Eyes -->
+            <circle cx="37" cy="44" r="3.5" fill="#ffffff" class="animate-blink" />
+            <circle cx="59" cy="44" r="3.5" fill="#ffffff" class="animate-blink" />
+            <circle cx="38" cy="43" r="1.5" fill="#27272a" />
+            <circle cx="58" cy="43" r="1.5" fill="#27272a" />
+            <!-- Nose & Cute Mouth -->
+            <ellipse cx="48" cy="54" rx="4.5" ry="3" fill="#27272a" />
+            <path d="M43 59 Q48 64 53 59" stroke="#27272a" stroke-width="2.2" fill="none" stroke-linecap="round" />
+            <!-- Blush -->
+            <ellipse cx="27" cy="55" rx="5.5" ry="3" fill="#ff8fa3" opacity="0.7" />
+            <ellipse cx="69" cy="55" rx="5.5" ry="3" fill="#ff8fa3" opacity="0.7" />
+            <!-- Paws -->
+            <ellipse cx="20" cy="92" rx="9" ry="13" transform="rotate(-20 20 92)" fill="#27272a" />
+            <ellipse cx="76" cy="84" rx="9" ry="13" transform="rotate(30 76 84)" fill="#27272a" />
+          </g>
+
+          <!-- Floating Heart Between Them -->
+          <path d="M110 38 C110 33, 102 30, 102 36 C102 41, 110 46, 110 46 C110 46, 118 41, 118 36 C118 30, 110 33, 110 38 Z" fill="#f43f5e" class="animate-pulse-heart" />
+        </svg>
+      </div>
+
+      <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold mb-2" style="background-color: var(--badge-bg); color: var(--primary);">
+        ✨ Top Secret Delivery ✨
+      </span>
+
+      <h1 class="text-2xl sm:text-3xl font-bold mb-2 leading-tight">
+        Hey <span style="color: var(--primary);">Kiddo</span>! 👀
+      </h1>
+
+      <p class="text-sm sm:text-base font-medium opacity-90 mb-5 leading-relaxed">
+        Before we begin... I realized I don’t even know your favorite color (yes, minus 100 friendship points for me 🤦‍♂️).
+        <br><strong class="font-bold">Pick a color vibe you like first!</strong>
+      </p>
+
+      <!-- Interactive Color Vibe Picker -->
+      <div class="w-full bg-white/70 rounded-2xl p-3.5 mb-6 border border-white">
+        <p class="text-xs font-bold uppercase tracking-wider mb-2.5 opacity-75">Tap your favorite vibe:</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button onclick="setTheme('lavender', this)" class="color-choice active-choice flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 border-purple-500 bg-purple-50 transition-all">
+            <span class="w-7 h-7 rounded-full bg-gradient-to-tr from-purple-500 to-pink-400 shadow-sm"></span>
+            <span class="text-[11px] font-bold text-purple-900">Lilac</span>
+          </button>
+
+          <button onclick="setTheme('pink', this)" class="color-choice flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 border-transparent hover:bg-pink-50 transition-all">
+            <span class="w-7 h-7 rounded-full bg-gradient-to-tr from-pink-500 to-rose-300 shadow-sm"></span>
+            <span class="text-[11px] font-bold text-pink-900">Pink</span>
+          </button>
+
+          <button onclick="setTheme('mint', this)" class="color-choice flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 border-transparent hover:bg-teal-50 transition-all">
+            <span class="w-7 h-7 rounded-full bg-gradient-to-tr from-teal-500 to-emerald-300 shadow-sm"></span>
+            <span class="text-[11px] font-bold text-teal-900">Mint</span>
+          </button>
+
+          <button onclick="setTheme('peach', this)" class="color-choice flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 border-transparent hover:bg-orange-50 transition-all">
+            <span class="w-7 h-7 rounded-full bg-gradient-to-tr from-orange-500 to-amber-300 shadow-sm"></span>
+            <span class="text-[11px] font-bold text-orange-900">Peach</span>
+          </button>
+
+          <button onclick="setTheme('sky', this)" class="color-choice flex flex-col items-center gap-1 p-1.5 rounded-xl border-2 border-transparent hover:bg-sky-50 transition-all">
+            <span class="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-500 to-blue-300 shadow-sm"></span>
+            <span class="text-[11px] font-bold text-sky-900">Sky</span>
+          </button>
+        </div>
+      </div>
+
+      <button onclick="startQuiz()" class="theme-btn w-full py-3.5 px-6 rounded-2xl font-display font-bold text-lg flex items-center justify-center gap-2">
+        <span>Let's Go!</span>
+        <span>👉</span>
+      </button>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: 5 FUNNY INTERACTIVE QUESTIONS    -->
+    <!-- ========================================== -->
+    <section id="screen-quiz" class="screen flex-col theme-card rounded-3xl p-6 sm:p-7">
+      <!-- Progress Bar -->
+      <div class="w-full mb-5">
+        <div class="flex justify-between items-center text-xs font-bold mb-1.5" style="color: var(--text-muted);">
+          <span id="question-counter">Question 1 of 5</span>
+          <span id="quiz-mood-badge">🧸 Investigation Mode</span>
+        </div>
+        <div class="w-full h-2.5 bg-gray-200/80 rounded-full overflow-hidden">
+          <div id="progress-bar" class="h-full rounded-full transition-all duration-500" style="width: 20%; background-color: var(--primary);"></div>
+        </div>
+      </div>
+
+      <!-- Animated Mini Toy Reaction Header -->
+      <div id="quiz-toy-icon" class="text-4xl text-center mb-2 animate-wiggle select-none">
+        🤖
+      </div>
+
+      <!-- Question Title -->
+      <h2 id="question-text" class="text-xl sm:text-2xl font-bold text-center mb-5 leading-snug">
+        Loading question...
+      </h2>
+
+      <!-- Options Container -->
+      <div id="options-container" class="flex flex-col gap-3 w-full">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+      <!-- Funny Reaction Toast Box (Appears after picking an answer) -->
+      <div id="reaction-box" class="hidden mt-5 p-4 rounded-2xl text-center animate-pop border" style="background-color: var(--primary-light); border-color: var(--primary);">
+        <p id="reaction-text" class="text-sm sm:text-base font-bold mb-3"></p>
+        <button id="next-question-btn" onclick="nextQuestion()" class="theme-btn px-6 py-2.5 rounded-xl font-display font-semibold text-sm inline-flex items-center gap-1.5">
+          <span>Next</span>
+          <span>➡️</span>
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: CUTE PANDA HOLDING SORRY SIGN    -->
+    <!-- ========================================== -->
+    <section id="screen-panda" class="screen flex-col items-center text-center theme-card rounded-3xl p-6 sm:p-8">
+      <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold mb-3" style="background-color: var(--badge-bg); color: var(--primary);">
+        🚨 Special Messenger Arrived 🚨
+      </span>
+
+      <!-- Detailed Animated Panda Holding "SORRY KIDDO" Sign + Peeking Teddy -->
+      <div class="w-full max-w-[300px] mx-auto my-2 animate-float">
+        <svg viewBox="0 0 320 295" class="w-full h-auto drop-shadow-lg">
+          <!-- Ground Shadow -->
+          <ellipse cx="160" cy="282" rx="105" ry="10" fill="rgba(0,0,0,0.09)" />
+
+          <!-- Little Teddy Peeking from Behind Right Shoulder -->
+          <g transform="translate(215, 75) rotate(12)">
+            <circle cx="20" cy="16" r="10" fill="#c08457" />
+            <circle cx="48" cy="16" r="10" fill="#c08457" />
+            <circle cx="34" cy="34" r="22" fill="#d49668" />
+            <ellipse cx="34" cy="40" rx="10" ry="8" fill="#fae1cc" />
+            <circle cx="27" cy="31" r="2.8" fill="#2d1b12" />
+            <circle cx="41" cy="31" r="2.8" fill="#2d1b12" />
+            <ellipse cx="34" cy="37" rx="3.5" ry="2.2" fill="#4a2c1d" />
+            <path d="M30 42 Q34 45 38 42" stroke="#4a2c1d" stroke-width="1.8" fill="none" stroke-linecap="round" />
+          </g>
+
+          <!-- PANDA EARS -->
+          <circle cx="106" cy="46" r="22" fill="#1f2937" />
+          <circle cx="214" cy="46" r="22" fill="#1f2937" />
+
+          <!-- PANDA BODY -->
+          <ellipse cx="160" cy="195" rx="68" ry="74" fill="#ffffff" stroke="#e5e7eb" stroke-width="2.5" />
+          <!-- Black Panda Chest Band -->
+          <path d="M98 165 Q160 198 222 165" stroke="#1f2937" stroke-width="22" fill="none" stroke-linecap="round" />
+
+          <!-- PANDA LEGS / FEET -->
+          <ellipse cx="122" cy="264" rx="22" ry="15" fill="#1f2937" />
+          <ellipse cx="122" cy="266" rx="11" ry="7" fill="#4b5563" />
+          <ellipse cx="198" cy="264" rx="22" ry="15" fill="#1f2937" />
+          <ellipse cx="198" cy="266" rx="11" ry="7" fill="#4b5563" />
+
+          <!-- PANDA HEAD -->
+          <ellipse cx="160" cy="96" rx="58" ry="50" fill="#ffffff" stroke="#e5e7eb" stroke-width="2.5" />
+
+          <!-- Puppy-dog Sad/Cute Eye Patches -->
+          <ellipse cx="136" cy="92" rx="16" ry="20" transform="rotate(-18 136 92)" fill="#1f2937" />
+          <ellipse cx="184" cy="92" rx="16" ry="20" transform="rotate(18 184 92)" fill="#1f2937" />
+
+          <!-- Big Glossy Puppy Eyes -->
+          <g class="animate-blink">
+            <circle cx="136" cy="90" r="8.5" fill="#111827" />
+            <circle cx="133" cy="87" r="3.2" fill="#ffffff" />
+            <circle cx="139" cy="93" r="1.5" fill="#ffffff" />
+
+            <circle cx="184" cy="90" r="8.5" fill="#111827" />
+            <circle cx="181" cy="87" r="3.2" fill="#ffffff" />
+            <circle cx="187" cy="93" r="1.5" fill="#ffffff" />
+          </g>
+
+          <!-- Cute Soft Kawaii Eyebrows -->
+          <path d="M126 73 Q136 69 144 74" stroke="#1f2937" stroke-width="2.6" fill="none" stroke-linecap="round" />
+          <path d="M194 73 Q184 69 176 74" stroke="#1f2937" stroke-width="2.6" fill="none" stroke-linecap="round" />
+
+          <!-- Extra Rosy Kawaii Blush -->
+          <ellipse cx="116" cy="105" rx="10" ry="5.5" fill="#ff8fa3" opacity="0.85" />
+          <ellipse cx="204" cy="105" rx="10" ry="5.5" fill="#ff8fa3" opacity="0.85" />
+
+          <!-- Cute Button Nose & Tiny Kawaii Cat/Bear Smile -->
+          <ellipse cx="160" cy="102" rx="6.5" ry="4.5" fill="#1f2937" />
+          <path d="M151 110 Q155.5 116 160 110 Q164.5 116 169 110" stroke="#1f2937" stroke-width="2.8" fill="none" stroke-linecap="round" />
+
+          <!-- THE PLACARD / SIGN HELD BY PANDA -->
+          <g class="animate-wiggle" style="transform-origin: 160px 195px;">
+            <!-- Sign Board -->
+            <rect x="48" y="148" width="224" height="86" rx="18" fill="#fffbeb" stroke="#f59e0b" stroke-width="4" />
+            <rect x="55" y="155" width="210" height="72" rx="13" fill="#ffffff" stroke="#fde68a" stroke-width="2" stroke-dasharray="6 4" />
+
+            <!-- Sign Text -->
+            <text x="160" y="185" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="23" fill="#e11d48">
+              I'M SORRY
+            </text>
+            <text x="160" y="213" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="25" fill="#7c3aed">
+              KIDDO! 🥺💛
+            </text>
+
+            <!-- Cute Little Hearts on Sign Corners -->
+            <text x="68" y="175" font-size="14">💖</text>
+            <text x="236" y="175" font-size="14">💖</text>
+          </g>
+
+          <!-- PANDA PAWS HOLDING THE SIGN -->
+          <ellipse cx="56" cy="192" rx="15" ry="18" fill="#1f2937" />
+          <ellipse cx="264" cy="192" rx="15" ry="18" fill="#1f2937" />
+        </svg>
+      </div>
+
+      <p class="text-sm sm:text-base font-semibold opacity-90 mb-5">
+        This little guy traveled all the way here on behalf of a very guilty idiot...
+      </p>
+
+      <!-- Button requested by user: "He wants to say something" -->
+      <button onclick="revealApology()" class="theme-btn w-full py-4 px-6 rounded-2xl font-display font-bold text-lg flex items-center justify-center gap-2 shadow-lg">
+        <span>He wants to say something...</span>
+        <span class="text-xl">💌</span>
+      </button>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SCREEN 4: APOLOGY NOTE & BOUNTY RAIN       -->
+    <!-- ========================================== -->
+    <section id="screen-apology" class="screen flex-col items-center text-center theme-card rounded-3xl p-6 sm:p-7">
+      <!-- Top Bounty Badge & Mini Panda -->
+      <div class="flex items-center justify-center gap-2 mb-3">
+        <span class="text-3xl animate-bounce">🐼</span>
+        <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style="background-color: var(--badge-bg); color: var(--primary);">
+          Official Peace Offering
+        </span>
+        <span class="text-3xl animate-bounce" style="animation-delay: 0.2s;">🍫</span>
+      </div>
+
+      <h2 class="text-2xl font-bold mb-3" style="color: var(--primary);">
+        Dear Kiddo,
+      </h2>
+
+      <!-- Balanced, Sincere, Cute + Funny Apology Paragraph -->
+      <div class="w-full bg-white/90 rounded-2xl p-4 sm:p-5 text-left border shadow-inner mb-5 space-y-3 text-sm sm:text-base leading-relaxed" style="border-color: var(--card-border);">
+        <p>
+          I’m genuinely sorry for yelling at you over something so simple—and even worse, for standing there and literally talking complete nonsense when I had zero reason to. You didn’t deserve that attitude at all, and I feel terrible knowing I hurt you.
+        </p>
+        <p>
+          You’re way too important to me as a friend for me to ever let my temper speak louder than my brain.
+        </p>
+        <p class="font-bold pt-1" style="color: var(--primary);">
+          Consider this my official recall notice for a defective mouth—plus a lifetime mute-button pass for you and an emergency Bounty chocolate delivery on the way! 🍫✨
+        </p>
+      </div>
+
+      <!-- Interactive Action Buttons -->
+      <div class="w-full flex flex-col gap-3">
+        <button onclick="triggerBountyRain(28)" class="w-full py-3 px-5 rounded-2xl font-display font-bold text-base bg-sky-500 hover:bg-sky-600 text-white shadow-md transition-transform active:scale-95 flex items-center justify-center gap-2">
+          <span>Make It Rain More Bounty!</span>
+          <span>🍫✨</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2.5 mt-1 relative" id="forgive-area">
+          <button id="forgive-yes-btn" onclick="forgivenSuccess()" class="theme-btn py-3.5 px-4 rounded-2xl font-display font-bold text-base flex items-center justify-center gap-1.5">
+            <span>Forgiven 🤍</span>
+          </button>
+
+          <button id="forgive-no-btn" onclick="dodgeNoButton()" class="py-3.5 px-4 rounded-2xl font-display font-bold text-base bg-gray-100 hover:bg-gray-200 text-gray-700 border-2 border-gray-200 transition-all">
+            Still Mad 😤
+          </button>
+        </div>
+      </div>
+
+      <!-- Final Smile Celebration Banner (Hidden until she clicks Forgiven) -->
+      <div id="final-smile-banner" class="hidden mt-5 w-full p-4 rounded-2xl animate-pop border-2" style="background-color: var(--primary-light); border-color: var(--primary);">
+        <p class="font-display font-bold text-lg mb-1" style="color: var(--primary);">
+          YAY!! Best Friend Unlocked Again! 🎉🥳
+        </p>
+        <p class="text-xs sm:text-sm font-semibold opacity-90">
+          Thank you for smiling, Kiddo! Your Bounty chocolate debt is officially locked in. 🍫💙
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ==========================================
+    // 1. DYNAMIC COLOR THEME SWITCHER
+    // ==========================================
+    function setTheme(themeName, btnElement) {
+      document.body.setAttribute('data-theme', themeName);
+
+      // Update active card visual state if clicked from welcome card
+      if (btnElement) {
+        document.querySelectorAll('.color-choice').forEach(btn => {
+          btn.style.borderColor = 'transparent';
+          btn.style.backgroundColor = 'transparent';
+        });
+        btnElement.style.borderColor = 'var(--primary)';
+        btnElement.style.backgroundColor = 'var(--primary-light)';
+      }
+    }
+
+    // ==========================================
+    // 2. SCREEN NAVIGATION HELPER
+    // ==========================================
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(sec => {
+        sec.classList.remove('active', 'animate-pop');
+      });
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active', 'animate-pop');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // ==========================================
+    // 3. 5 FUNNY & EMOTIONAL QUIZ QUESTIONS
+    // ==========================================
+    const quizData = [
+      {
+        toy: "🙈💭",
+        badge: "Question 1 • Honest Confession",
+        question: "Be honest Kiddo... what actually happened when I yelled over that tiny thing?",
+        options: [
+          {
+            text: "Your brain went on vacation and your mouth kept talking 🗣️",
+            reaction: "100% true! My mouth was running at full speed with zero thoughts behind it. 🤦‍♂️"
+          },
+          {
+            text: "You turned into a grumpy cartoon character for no reason 😤",
+            reaction: "Guilty! I threw a whole tantrum over nothing and you didn't deserve even a bit of it. 🙇‍♂️"
+          },
+          {
+            text: "You forgot that shouting at Kiddo is strictly illegal 🚨",
+            reaction: "Consider me arrested! And honestly, making you upset is the worst feeling ever. 💛"
+          }
+        ]
+      },
+      {
+        toy: "🤡🎪",
+        badge: "Question 2 • Hall of Shame",
+        question: "After hearing all the nonsense I spoke earlier, what title do I officially win?",
+        options: [
+          {
+            text: "World Champion of Talking Rubbish 🏆",
+            reaction: "Gold medal accepted! I promise to retire from talking nonsense forever. 🥇😅"
+          },
+          {
+            text: "Honorary Member of the Clown Club 🤡",
+            reaction: "Putting on the red nose right now just hoping it makes you giggle a little! 🔴😊"
+          },
+          {
+            text: "No titles—just someone who owes Kiddo a proper sorry 💌",
+            reaction: "You're right. No jokes can cover it up—I'm genuinely, deeply sorry for hurting you. 🤍"
+          }
+        ]
+      },
+      {
+        toy: "🥺💖",
+        badge: "Question 3 • Real Talk",
+        question: "Want to know what's actually bothering me the most right now?",
+        options: [
+          {
+            text: "Knowing my harsh words actually hurt my feelings 😔",
+            reaction: "Yes, Kiddo. Hurting you is the very last thing I ever want to do in this world. 💔➡️💛"
+          },
+          {
+            text: "The awkward silence instead of our usual silly laughs ✨",
+            reaction: "Everything feels so boring when you're mad at me. I really miss my happy Kiddo! 🌟"
+          },
+          {
+            text: "The fact that your wallet is about to suffer for chocolates 🍫",
+            reaction: "Haha, fair point! My wallet might cry, but seeing you smile is worth every single bite! 🍫😄"
+          }
+        ]
+      },
+      {
+        toy: "⚖️🍫",
+        badge: "Question 4 • Kiddo's Rules",
+        question: "Since you're the boss right now, what's my official punishment?",
+        options: [
+          {
+            text: "Bounty chocolates on demand—zero questions asked 🍫",
+            reaction: "Deal! Your personal Bounty chocolate delivery service is officially open! 🍫✨"
+          },
+          {
+            text: "Next time you start talking nonsense, instant mute button 🤐",
+            reaction: "Agreed! One look from you and I'll zip my mouth shut immediately. 🤐💛"
+          },
+          {
+            text: "Extra kindness, zero yelling, and full VIP treatment 🧸",
+            reaction: "Signed and sealed! You deserve nothing less than my best every single day. 🥰"
+          }
+        ]
+      },
+      {
+        toy: "🐼🎁",
+        badge: "Question 5 • Special Delivery",
+        question: "One last question before the surprise... ready to see who came to apologize on my behalf?",
+        options: [
+          {
+            text: "Yes! Bring out the cute messenger already 🐼💌",
+            reaction: "He's been practicing his sweetest puppy eyes just for you... here he comes! 🐾✨"
+          },
+          {
+            text: "Only if he brought a sweet note and Bounty chocolates 🍫",
+            reaction: "Both are waiting right behind this button, Kiddo! Let's go! 🚀💖"
+          }
+        ]
+      }
+    ];
+
+    let currentQIndex = 0;
+
+    function startQuiz() {
+      currentQIndex = 0;
+      renderQuestion();
+      showScreen('screen-quiz');
+    }
+
+    function renderQuestion() {
+      const q = quizData[currentQIndex];
+      document.getElementById('question-counter').textContent = `Question ${currentQIndex + 1} of ${quizData.length}`;
+      document.getElementById('quiz-mood-badge').textContent = q.badge;
+      document.getElementById('progress-bar').style.width = `${((currentQIndex + 1) / quizData.length) * 100}%`;
+      document.getElementById('quiz-toy-icon').textContent = q.toy;
+      document.getElementById('question-text').textContent = q.question;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      const reactionBox = document.getElementById('reaction-box');
+      reactionBox.classList.add('hidden');
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn w-full text-left p-4 rounded-2xl font-semibold text-sm sm:text-base shadow-sm flex items-center justify-between gap-3';
+        btn.innerHTML = `<span>${opt.text}</span><span class="text-lg opacity-60">👉</span>`;
+        btn.onclick = () => selectOption(btn, opt.reaction);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedBtn, reactionText) {
+      // Highlight selected option
+      document.querySelectorAll('#options-container .option-btn').forEach(b => {
+        b.style.opacity = '0.55';
+        b.style.transform = 'scale(0.98)';
+      });
+      selectedBtn.style.opacity = '1';
+      selectedBtn.style.borderColor = 'var(--primary)';
+      selectedBtn.style.backgroundColor = 'var(--primary-light)';
+      selectedBtn.style.transform = 'scale(1.01)';
+
+      const reactionBox = document.getElementById('reaction-box');
+      document.getElementById('reaction-text').textContent = reactionText;
+
+      const nextBtn = document.getElementById('next-question-btn');
+      if (currentQIndex === quizData.length - 1) {
+        nextBtn.innerHTML = `<span>Meet the Messenger</span> <span>🐼</span>`;
+      } else {
+        nextBtn.innerHTML = `<span>Next Question</span> <span>➡️</span>`;
+      }
+
+      reactionBox.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      if (currentQIndex < quizData.length - 1) {
+        currentQIndex++;
+        renderQuestion();
+      } else {
+        showScreen('screen-panda');
+      }
+    }
+
+    // ==========================================
+    // 4. REVEAL APOLOGY & BOUNTY CHOCOLATE RAIN
+    // ==========================================
+    function revealApology() {
+      showScreen('screen-apology');
+      triggerBountyRain(34);
+    }
+
+    // High-detail SVG Generator for Iconic Blue & White Bounty Chocolate Bars + Chocolate Piece
+    function createBountySVG() {
+      const uid = Math.random().toString(36).substring(2, 8);
+      return `
+        <svg width="84" height="44" viewBox="0 0 148 76" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 5px 7px rgba(0,0,0,0.22));">
+          <defs>
+            <linearGradient id="bountyBlue-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" />
+              <stop offset="48%" stop-color="#0284c7" />
+              <stop offset="100%" stop-color="#0369a1" />
+            </linearGradient>
+            <linearGradient id="chocoGrad-${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c472b" />
+              <stop offset="50%" stop-color="#582f1a" />
+              <stop offset="100%" stop-color="#3b1d0e" />
+            </linearGradient>
+          </defs>
+
+          <!-- Wrapper Crimped Left & Right Zig-Zag Ends -->
+          <path d="M3 13 L16 17 L16 59 L3 63 L8 50 L3 38 L8 26 Z" fill="#0369a1" />
+          <path d="M145 13 L132 17 L132 59 L145 63 L140 50 L145 38 L140 26 Z" fill="#0369a1" />
+
+          <!-- Main Iconic Sky-Blue Wrapper Body -->
+          <rect x="14" y="14" width="120" height="48" rx="8" fill="url(#bountyBlue-${uid})" stroke="#e0f2fe" stroke-width="1.6" />
+
+          <!-- Crisp White & Silver Accent Band -->
+          <path d="M15 45 Q52 35 80 46 T133 42 L133 55 Q133 61 126 61 L22 61 Q15 61 15 55 Z" fill="#ffffff" opacity="0.95" />
+
+          <!-- Glossy Milk Chocolate Bar Piece Illustrated on Wrapper -->
+          <rect x="96" y="42" width="28" height="14" rx="4" fill="url(#chocoGrad-${uid})" stroke="#3b1d0e" stroke-width="1" />
+          <path d="M101 45 Q110 43 119 45" stroke="#a1623f" stroke-width="1.5" fill="none" stroke-linecap="round" />
+          <path d="M101 50 Q110 48 119 50" stroke="#a1623f" stroke-width="1.5" fill="none" stroke-linecap="round" />
+
+          <!-- BOUNTY Bold Iconic Typography -->
+          <text x="64" y="38.5" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="19.5" letter-spacing="0.9" fill="#0c4a6e">
+            BOUNTY
+          </text>
+          <text x="63" y="37" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="19.5" letter-spacing="0.9" fill="#ffffff">
+            BOUNTY
+          </text>
+
+          <!-- Mini Wrapped Chocolate Bar Badge on Bottom Left -->
+          <rect x="23" y="47" width="38" height="9" rx="2.5" fill="#0284c7" />
+          <text x="42" y="53.5" text-anchor="middle" font-family="Quicksand, Arial, sans-serif" font-weight="700" font-size="6.5" fill="#ffffff">
+            MILK CHOC
+          </text>
+        </svg>
+      `;
+    }
+
+    function triggerBountyRain(count = 26) {
+      const rainLayer = document.getElementById('rain-layer');
+      const extras = ['🍫', '💖', '✨', '🐼'];
+
+      for (let i = 0; i < count; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'rain-item';
+
+        // 78% Bounty chocolate bars, 22% chocolate emojis/hearts/pandas
+        const isBounty = Math.random() < 0.78;
+        if (isBounty) {
+          drop.innerHTML = createBountySVG();
+        } else {
+          const emoji = extras[Math.floor(Math.random() * extras.length)];
+          drop.innerHTML = `<span style="font-size: ${22 + Math.random() * 14}px;">${emoji}</span>`;
+        }
+
+        const startLeft = Math.random() * 92; // percentage across screen
+        const duration = 2.6 + Math.random() * 2.4; // seconds
+        const delay = Math.random() * 1.4; // staggered start
+        const scale = 0.75 + Math.random() * 0.45;
+
+        drop.style.left = `${startLeft}vw`;
+        drop.style.animationDuration = `${duration}s`;
+        drop.style.animationDelay = `${delay}s`;
+        drop.style.transform = `scale(${scale})`;
+
+        rainLayer.appendChild(drop);
+
+        // Clean up DOM after animation finishes
+        setTimeout(() => {
+          drop.remove();
+        }, (duration + delay + 0.3) * 1000);
+      }
+    }
+
+    // ==========================================
+    // 5. PLAYFUL "STILL MAD" DODGE & FORGIVEN CELEBRATION
+    // ==========================================
+    let dodgeCount = 0;
+    const funnyNoTexts = [
+      "Are you sure? 🥺",
+      "Look at the panda! 🐼",
+      "Error: Button broken 🚧",
+      "Nice try, Kiddo! 😜",
+      "Okay fine, click left 👈"
+    ];
+
+    function dodgeNoButton() {
+      const noBtn = document.getElementById('forgive-no-btn');
+      if (dodgeCount < funnyNoTexts.length) {
+        noBtn.textContent = funnyNoTexts[dodgeCount];
+        const randomX = (Math.random() - 0.5) * 40;
+        const randomY = (Math.random() - 0.5) * 24;
+        noBtn.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${(Math.random() - 0.5) * 14}deg)`;
+        dodgeCount++;
+      } else {
+        // Transform into a second Forgiven button!
+        noBtn.textContent = "Okay Forgiven 🍫";
+        noBtn.style.transform = "translate(0, 0)";
+        noBtn.className = "theme-btn py-3.5 px-4 rounded-2xl font-display font-bold text-base flex items-center justify-center gap-1.5";
+        noBtn.onclick = forgivenSuccess;
+      }
+    }
+
+    function forgivenSuccess() {
+      const banner = document.getElementById('final-smile-banner');
+      banner.classList.remove('hidden');
+
+      const noBtn = document.getElementById('forgive-no-btn');
+      noBtn.textContent = "Besties 💛";
+      noBtn.style.transform = "none";
+      noBtn.disabled = true;
+      noBtn.style.opacity = "0.7";
+
+      const yesBtn = document.getElementById('forgive-yes-btn');
+      yesBtn.innerHTML = `<span>Smiled! 😊✨</span>`;
+
+      // Launch celebratory Bounty + Hearts shower!
+      triggerBountyRain(42);
+    }
+  </script>
+</body>
+</html>
